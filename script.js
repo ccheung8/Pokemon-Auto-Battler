@@ -20,6 +20,8 @@ const pokemonTrainerTwo = {
 }
 
 async function startBattle() {
+  // Clears winner text
+  document.getElementById('winner').innerText = "";
   // assigns 6 pokemon to both trainers
   [pokemonTrainerOne.pokemons, pokemonTrainerTwo.pokemons] = await Promise.all([
     assignPokemon(),
@@ -29,38 +31,10 @@ async function startBattle() {
   // Displays trainer names and images
   document.getElementById('trainerOne').innerText = "Trainer One";
   document.getElementById('trainerTwo').innerText = "Trainer Two";
-  
-  // Get pokemon name containers
-  const pokemonOne = document.getElementById('pokemonOne');
-  const pokemonTwo = document.getElementById('pokemonTwo');
-  
-  // Initiates battle
-  while (pokemonTrainerOne.pokemons.length && pokemonTrainerTwo.pokemons.length) {
-    // Displays pokemon names
-    pokemonOne.innerText = pokemonTrainerOne.pokemons[0].name;
-    pokemonTwo.innerText = pokemonTrainerTwo.pokemons[0].name;
-    console.log(pokemonTrainerOne.pokemons);
-    console.log(pokemonTrainerTwo.pokemons);
-    
-    // determines who goes first
-    if (pokemonTrainerOne.pokemons[0].speed >= pokemonTrainerTwo.pokemons[0].speed) {
-      // trainer one goes first
-      console.log("trainer one went first");
-      fightCalc(pokemonTrainerOne.pokemons, pokemonTrainerTwo.pokemons);
-    } else {
-      // trainer two goes first
-      console.log("trainer two went first");
-      fightCalc(pokemonTrainerTwo.pokemons, pokemonTrainerOne.pokemons);
-    }
-  }
 
-  const winner = document.getElementById("winner");
-  // Displays winner
-  if (pokemonTrainerOne.pokemons.length > pokemonTrainerTwo.pokemons.length) {
-    winner.innerText = "Pokemon Trainer One Wins!"
-  } else {
-    winner.innerText = "Pokemon Trainer Two Wins!"
-  }
+  // Displays pokimon info and starts fight
+  updatePokemon();
+  startFight();
 }
 
 async function assignPokemon() {
@@ -80,16 +54,73 @@ async function assignPokemon() {
   return pokemons;
 }
 
+function startFight() {
+  console.log(pokemonTrainerOne.pokemons);
+  console.log(pokemonTrainerTwo.pokemons);
+  
+  // determines who goes first
+  if (pokemonTrainerOne.pokemons[0].speed >= pokemonTrainerTwo.pokemons[0].speed) {
+    // trainer one goes first
+    console.log("trainer one went first");
+    fightCalc(pokemonTrainerOne.pokemons, pokemonTrainerTwo.pokemons);
+  } else {
+    // trainer two goes first
+    console.log("trainer two went first");
+    fightCalc(pokemonTrainerTwo.pokemons, pokemonTrainerOne.pokemons);
+  }
+
+  // Initiates battle
+  if (pokemonTrainerOne.pokemons.length && pokemonTrainerTwo.pokemons.length) {
+    setTimeout(startFight, 1000);
+    updatePokemon();
+  } else {
+    // Displays winner
+    if (pokemonTrainerOne.pokemons.length > pokemonTrainerTwo.pokemons.length) {
+      document.getElementById("winner").innerText = "Pokemon Trainer One Wins!"
+    } else {
+      document.getElementById("winner").innerText = "Pokemon Trainer Two Wins!"
+    }
+  }
+}
+
 function fightCalc(firstTrainerPokemons, secondTrainerPokemons) {
   secondTrainerPokemons[0].hp -= firstTrainerPokemons[0].attack;
   if (secondTrainerPokemons[0].hp > 0) {
     firstTrainerPokemons[0].hp -= secondTrainerPokemons[0].attack;
     if (firstTrainerPokemons[0].hp < 1) {
       firstTrainerPokemons.shift();
-      console.log("Trainer who went first defeated");
+      console.log("Trainer who went second won");
     }
   } else {
     secondTrainerPokemons.shift();
-    console.log("Trainer who went second defeated");
+    console.log("Trainer who went first won");
+  }
+  
+  updatePokemon();
+}
+
+function updatePokemon() {
+  if (pokemonTrainerOne.pokemons.length && pokemonTrainerTwo.pokemons.length) {
+    // Get pokemon sprite containers and displays them
+    const spriteOne = document.getElementById('spriteOne');
+    const spriteTwo = document.getElementById('spriteTwo');
+    spriteOne.src = pokemonTrainerOne.pokemons[0].sprite;
+    spriteTwo.src = pokemonTrainerTwo.pokemons[0].sprite;
+  
+    // Get pokemon info containers
+    const pokemonOne = document.getElementById('pokemonOne');
+    const pokemonOneHP = document.getElementById('pokemonOneHP');
+    const pokemonOneSPD = document.getElementById('pokemonOneSPD');
+    const pokemonTwo = document.getElementById('pokemonTwo');
+    const pokemonTwoHP = document.getElementById('pokemonTwoHP');
+    const pokemonTwoSPD = document.getElementById('pokemonTwoSPD');
+    
+    // Displays pokemon info
+    pokemonOne.innerText = pokemonTrainerOne.pokemons[0].name;
+    pokemonOneHP.innerText = "hp: " + pokemonTrainerOne.pokemons[0].hp;
+    pokemonOneSPD.innerText = "spd: " + pokemonTrainerOne.pokemons[0].speed;
+    pokemonTwo.innerText = pokemonTrainerTwo.pokemons[0].name;
+    pokemonTwoHP.innerText = "hp: " + pokemonTrainerTwo.pokemons[0].hp;
+    pokemonTwoSPD.innerText = "spd: " + pokemonTrainerTwo.pokemons[0].speed;
   }
 }
