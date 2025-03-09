@@ -67,7 +67,7 @@ async function assignPokemon() {
   let pokemons = [];
   for (let i = 0; i < 6; i++) {
     try {
-      // randomly generates id between 1 and 150 to randomize pokemon
+      // randomly generates id between 1 and 151 to randomize pokemon
       let res = await axios.get("https://pokeapi.co/api/v2/pokemon/" + Math.round((Math.random() * 151) + 1));
       let pokemon = res.data;
       // console.log(pokemon);
