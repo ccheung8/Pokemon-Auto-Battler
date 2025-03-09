@@ -30,14 +30,18 @@ async function startBattle() {
   document.getElementById('trainerOne').innerText = "Trainer One";
   document.getElementById('trainerTwo').innerText = "Trainer Two";
   
-  // Displays pokemon names
+  // Get pokemon name containers
   const pokemonOne = document.getElementById('pokemonOne');
   const pokemonTwo = document.getElementById('pokemonTwo');
   
   // Initiates battle
   while (pokemonTrainerOne.pokemons.length && pokemonTrainerTwo.pokemons.length) {
+    // Displays pokemon names
+    pokemonOne.innerText = pokemonTrainerOne.pokemons[0].name;
+    pokemonTwo.innerText = pokemonTrainerTwo.pokemons[0].name;
     console.log(pokemonTrainerOne.pokemons);
     console.log(pokemonTrainerTwo.pokemons);
+    
     // determines who goes first
     if (pokemonTrainerOne.pokemons[0].speed >= pokemonTrainerTwo.pokemons[0].speed) {
       // trainer one goes first
@@ -48,20 +52,13 @@ async function startBattle() {
       console.log("trainer two went first");
       fightCalc(pokemonTrainerTwo.pokemons, pokemonTrainerOne.pokemons);
     }
-    // pokemonOne.innerText = pokemonTrainerOne.pokemons[0].name;
-    // pokemonTwo.innerText = pokemonTrainerTwo.pokemons[0].name;
-    // pokemonTrainerOne.pokemons.shift();
-    // pokemonTrainerTwo.pokemons.shift();
-    // // console.log(pokemonTrainerOne.pokemons);
   }
 
   const winner = document.getElementById("winner");
   // Displays winner
   if (pokemonTrainerOne.pokemons.length > pokemonTrainerTwo.pokemons.length) {
-    console.log("pokemon trainer one wins!");
     winner.innerText = "Pokemon Trainer One Wins!"
   } else {
-    console.log("Pokemon Trainer two wins!");
     winner.innerText = "Pokemon Trainer Two Wins!"
   }
 }
