@@ -68,14 +68,12 @@ function startFight() {
     // trainer one goes first
     document.getElementById("battleLog").appendChild(bLogText);
     setTimeout(fightCalc, 1000, pokemonTrainerOne.pokemons, pokemonTrainerTwo.pokemons);
-    // fightCalc(pokemonTrainerOne.pokemons, pokemonTrainerTwo.pokemons);
   } else {
     // displays who goes first in battle log
     bLogText.innerText = pokemonTrainerTwo.pokemons[0].name + " goes first!"
     // trainer two goes first
     document.getElementById("battleLog").appendChild(bLogText);
     setTimeout(fightCalc, 1000, pokemonTrainerTwo.pokemons, pokemonTrainerOne.pokemons);
-    // fightCalc(pokemonTrainerTwo.pokemons, pokemonTrainerOne.pokemons);
   }
 }
 
@@ -132,7 +130,6 @@ async function assignPokemon() {
       // randomly generates id between 1 and 151 to randomize pokemon
       let res = await axios.get("https://pokeapi.co/api/v2/pokemon/" + Math.round((Math.random() * 151) + 1));
       let pokemon = res.data;
-      // console.log(pokemon);
       pokemons.push(new Pokemon(pokemon.name, pokemon.types, pokemon.stats[0].base_stat, pokemon.stats[1].base_stat, pokemon.stats[5].base_stat, pokemon.sprites.front_default));
     } catch (err) {
       console.error("Error fetching Pokemon: ", err);
