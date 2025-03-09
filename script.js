@@ -35,46 +35,35 @@ async function startBattle() {
   const pokemonTwo = document.getElementById('pokemonTwo');
   
   // Initiates battle
-  // while (pokemonTrainerOne.pokemons.length && pokemonTrainerTwo.pokemons.length) {
+  while (pokemonTrainerOne.pokemons.length && pokemonTrainerTwo.pokemons.length) {
+    console.log(pokemonTrainerOne.pokemons);
+    console.log(pokemonTrainerTwo.pokemons);
     // determines who goes first
     if (pokemonTrainerOne.pokemons[0].speed >= pokemonTrainerTwo.pokemons[0].speed) {
       // trainer one goes first
       console.log("trainer one went first");
-      pokemonTrainerTwo.pokemons[0].hp -= pokemonTrainerOne.pokemons[0].attack;
-      // if second trainer's pokemon is still alive
-      if (pokemonTrainerTwo.pokemons[0].hp > 0) {
-        // attack
-        pokemonTrainerOne.pokemons[0].hp -= pokemonTrainerTwo.pokemons[0].attack;
-      } else {
-        // shift
-        pokemonTrainerTwo.pokemons.shift();
-        console.log("trainer two's pokemon has been defeated");
-        // continue;
-      }
+      fightCalc(pokemonTrainerOne.pokemons, pokemonTrainerTwo.pokemons);
     } else {
       // trainer two goes first
       console.log("trainer two went first");
-      pokemonTrainerOne.pokemons[0].hp -= pokemonTrainerTwo.pokemons[0].attack;
-      // if first trainer's pokemon is still alive
-      if (pokemonTrainerOne.pokemons[0].hp > 0) {
-        // attack
-        pokemonTrainerTwo.pokemons[0].hp -= pokemonTrainerOne.pokemons[0].attack;
-      } else {
-        // shift
-        pokemonTrainerOne.pokemons.shift();
-        console.log("trainer one's pokemon has been defeated");
-        // continue;
-      }
-      pokemonTrainerTwo.pokemons[0].hp -= pokemonTrainerOne.pokemons[0].attack;
+      fightCalc(pokemonTrainerTwo.pokemons, pokemonTrainerOne.pokemons);
     }
-    console.log(pokemonTrainerOne.pokemons[0].hp);
-    console.log(pokemonTrainerTwo.pokemons[0].hp);
     // pokemonOne.innerText = pokemonTrainerOne.pokemons[0].name;
     // pokemonTwo.innerText = pokemonTrainerTwo.pokemons[0].name;
     // pokemonTrainerOne.pokemons.shift();
     // pokemonTrainerTwo.pokemons.shift();
     // // console.log(pokemonTrainerOne.pokemons);
-  // }
+  }
+
+  const winner = document.getElementById("winner");
+  // Displays winner
+  if (pokemonTrainerOne.pokemons.length > pokemonTrainerTwo.pokemons.length) {
+    console.log("pokemon trainer one wins!");
+    winner.innerText = "Pokemon Trainer One Wins!"
+  } else {
+    console.log("Pokemon Trainer two wins!");
+    winner.innerText = "Pokemon Trainer Two Wins!"
+  }
 }
 
 async function assignPokemon() {
@@ -94,6 +83,16 @@ async function assignPokemon() {
   return pokemons;
 }
 
-async function fight() {
-  // Displays pokemon names
+function fightCalc(firstTrainerPokemons, secondTrainerPokemons) {
+  secondTrainerPokemons[0].hp -= firstTrainerPokemons[0].attack;
+  if (secondTrainerPokemons[0].hp > 0) {
+    firstTrainerPokemons[0].hp -= secondTrainerPokemons[0].attack;
+    if (firstTrainerPokemons[0].hp < 1) {
+      firstTrainerPokemons.shift();
+      console.log("Trainer who went first defeated");
+    }
+  } else {
+    secondTrainerPokemons.shift();
+    console.log("Trainer who went second defeated");
+  }
 }
