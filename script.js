@@ -50,9 +50,11 @@ function startFight() {
     // Displays winner
     if (pokemonTrainerOne.pokemons.length > pokemonTrainerTwo.pokemons.length) {
       document.getElementById("winner").innerText = "Pokemon Trainer One Wins!"
+      // ends after determining winner
       return;
     } else {
       document.getElementById("winner").innerText = "Pokemon Trainer Two Wins!"
+      // ends after determining winner
       return;
     }
   }
@@ -67,12 +69,14 @@ function startFight() {
     bLogText.innerText = pokemonTrainerOne.pokemons[0].name + " goes first!"
     // trainer one goes first
     document.getElementById("battleLog").appendChild(bLogText);
+    // 1 second delay between turns for readability
     setTimeout(fightCalc, 1000, pokemonTrainerOne.pokemons, pokemonTrainerTwo.pokemons);
   } else {
     // displays who goes first in battle log
     bLogText.innerText = pokemonTrainerTwo.pokemons[0].name + " goes first!"
     // trainer two goes first
     document.getElementById("battleLog").appendChild(bLogText);
+    // 1 second delay between turns for readability
     setTimeout(fightCalc, 1000, pokemonTrainerTwo.pokemons, pokemonTrainerOne.pokemons);
   }
 }
