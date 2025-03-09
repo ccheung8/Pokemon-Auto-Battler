@@ -39,25 +39,6 @@ async function startBattle() {
 }
 
 function startFight() {
-  console.log(pokemonTrainerOne.pokemons);
-  console.log(pokemonTrainerTwo.pokemons);
-  
-  // determines who goes first
-  const bLogText = document.createElement("p");
-  if (pokemonTrainerOne.pokemons[0].speed >= pokemonTrainerTwo.pokemons[0].speed) {
-    // displays who goes first in battle log
-    bLogText.innerText = pokemonTrainerOne.pokemons[0].name + " goes first!"
-    // trainer one goes first
-    document.getElementById("battleLog").appendChild(bLogText);
-    fightCalc(pokemonTrainerOne.pokemons, pokemonTrainerTwo.pokemons);
-  } else {
-    // displays who goes first in battle log
-    bLogText.innerText = pokemonTrainerTwo.pokemons[0].name + " goes first!"
-    // trainer two goes first
-    document.getElementById("battleLog").appendChild(bLogText);
-    fightCalc(pokemonTrainerTwo.pokemons, pokemonTrainerOne.pokemons);
-  }
-
   // Initiates battle
   if (pokemonTrainerOne.pokemons.length && pokemonTrainerTwo.pokemons.length) {
     // fights with 2 second delay while pokemon are available
@@ -69,9 +50,32 @@ function startFight() {
     // Displays winner
     if (pokemonTrainerOne.pokemons.length > pokemonTrainerTwo.pokemons.length) {
       document.getElementById("winner").innerText = "Pokemon Trainer One Wins!"
+      return;
     } else {
       document.getElementById("winner").innerText = "Pokemon Trainer Two Wins!"
+      return;
     }
+  }
+
+  console.log(pokemonTrainerOne.pokemons);
+  console.log(pokemonTrainerTwo.pokemons);
+  
+  // determines who goes first
+  const bLogText = document.createElement("p");
+  if (pokemonTrainerOne.pokemons[0].speed >= pokemonTrainerTwo.pokemons[0].speed) {
+    // displays who goes first in battle log
+    bLogText.innerText = pokemonTrainerOne.pokemons[0].name + " goes first!"
+    // trainer one goes first
+    document.getElementById("battleLog").appendChild(bLogText);
+    setTimeout(fightCalc, 1000, pokemonTrainerOne.pokemons, pokemonTrainerTwo.pokemons);
+    // fightCalc(pokemonTrainerOne.pokemons, pokemonTrainerTwo.pokemons);
+  } else {
+    // displays who goes first in battle log
+    bLogText.innerText = pokemonTrainerTwo.pokemons[0].name + " goes first!"
+    // trainer two goes first
+    document.getElementById("battleLog").appendChild(bLogText);
+    setTimeout(fightCalc, 1000, pokemonTrainerTwo.pokemons, pokemonTrainerOne.pokemons);
+    // fightCalc(pokemonTrainerTwo.pokemons, pokemonTrainerOne.pokemons);
   }
 }
 
