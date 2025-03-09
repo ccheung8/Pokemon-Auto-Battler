@@ -1,8 +1,10 @@
 class Pokemon {
-  constructor(name, types, hp, sprite) {
+  constructor(name, types, hp, attack, speed, sprite) {
     this.name = name;
     this.types = types;
     this.hp = hp;
+    this.attack = attack;
+    this.speed = speed;
     this.sprite = sprite;
   }
 }
@@ -32,14 +34,47 @@ async function startBattle() {
   const pokemonOne = document.getElementById('pokemonOne');
   const pokemonTwo = document.getElementById('pokemonTwo');
   
-  while (pokemonTrainerOne.pokemons.length && pokemonTrainerTwo.pokemons.length) {
-    console.log("in battle");
-    pokemonOne.innerText = pokemonTrainerOne.pokemons[0].name;
-    pokemonTwo.innerText = pokemonTrainerTwo.pokemons[0].name;
-    pokemonTrainerOne.pokemons.shift();
-    pokemonTrainerTwo.pokemons.shift();
-    console.log(pokemonTrainerOne.pokemons);
-  }
+  // Initiates battle
+  // while (pokemonTrainerOne.pokemons.length && pokemonTrainerTwo.pokemons.length) {
+    // determines who goes first
+    if (pokemonTrainerOne.pokemons[0].speed >= pokemonTrainerTwo.pokemons[0].speed) {
+      // trainer one goes first
+      console.log("trainer one went first");
+      pokemonTrainerTwo.pokemons[0].hp -= pokemonTrainerOne.pokemons[0].attack;
+      // if second trainer's pokemon is still alive
+      if (pokemonTrainerTwo.pokemons[0].hp > 0) {
+        // attack
+        pokemonTrainerOne.pokemons[0].hp -= pokemonTrainerTwo.pokemons[0].attack;
+      } else {
+        // shift
+        pokemonTrainerTwo.pokemons.shift();
+        console.log("trainer two's pokemon has been defeated");
+        // continue;
+      }
+    } else {
+      // trainer two goes first
+      console.log("trainer two went first");
+      pokemonTrainerOne.pokemons[0].hp -= pokemonTrainerTwo.pokemons[0].attack;
+      // if first trainer's pokemon is still alive
+      if (pokemonTrainerOne.pokemons[0].hp > 0) {
+        // attack
+        pokemonTrainerTwo.pokemons[0].hp -= pokemonTrainerOne.pokemons[0].attack;
+      } else {
+        // shift
+        pokemonTrainerOne.pokemons.shift();
+        console.log("trainer one's pokemon has been defeated");
+        // continue;
+      }
+      pokemonTrainerTwo.pokemons[0].hp -= pokemonTrainerOne.pokemons[0].attack;
+    }
+    console.log(pokemonTrainerOne.pokemons[0].hp);
+    console.log(pokemonTrainerTwo.pokemons[0].hp);
+    // pokemonOne.innerText = pokemonTrainerOne.pokemons[0].name;
+    // pokemonTwo.innerText = pokemonTrainerTwo.pokemons[0].name;
+    // pokemonTrainerOne.pokemons.shift();
+    // pokemonTrainerTwo.pokemons.shift();
+    // // console.log(pokemonTrainerOne.pokemons);
+  // }
 }
 
 async function assignPokemon() {
@@ -49,11 +84,13 @@ async function assignPokemon() {
       // randomly generates id between 1 and 150 to randomize pokemon
       let res = await axios.get("https://pokeapi.co/api/v2/pokemon/" + Math.round((Math.random() * 151) + 1));
       let pokemon = res.data;
-      pokemons.push(new Pokemon(pokemon.name, pokemon.types, pokemon.stats[0].base_stat, pokemon.sprites.front_default));
+      // console.log(pokemon);
+      pokemons.push(new Pokemon(pokemon.name, pokemon.types, pokemon.stats[0].base_stat, pokemon.stats[1].base_stat, pokemon.stats[5].base_stat, pokemon.sprites.front_default));
     } catch (err) {
       console.error("Error fetching Pokemon: ", err);
     } 
   }
+  console.log(pokemons);
   return pokemons;
 }
 
