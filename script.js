@@ -1,4 +1,12 @@
 class Pokemon {
+  /**
+   * @param {string} name - specifies name of pokemon
+   * @param {array} types - specifies type(s) of pokemon
+   * @param {number} hp - specifies hp of pokemon
+   * @param {number} attack - specifies base attack of pokemon
+   * @param {number} speed - specifies speed of pokemon
+   * @param {string} sprite - specifies location of pokemon sprite
+   */
   constructor(name, types, hp, attack, speed, sprite) {
     this.name = name;
     this.types = types;
